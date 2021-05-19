@@ -20,7 +20,6 @@ for count3 = 1:reduce
 end
 %Creating part of global displacement vector and auxiliary force vector
 vc = 1;
-
 for count4 = 1:n_nodes
     verify = false;
     for count5 = 1:reduce
@@ -70,4 +69,3 @@ for count9 = 1:n_elements
     gg=1;
     InternalStresses(:,:,count9) = LinearBarElementStresses(K_matrix(:,:,count9),[U_Vector(I_matrix(count9,gg));U_Vector(I_matrix(count9,gg+1))], A_vector(count9));
 end
-InternalStresses
