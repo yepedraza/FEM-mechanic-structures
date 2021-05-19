@@ -1,24 +1,27 @@
 function [U_Vector, F_Vector, InternalForces] = SpringSolver(k_vector, n_nodes, f_nodes, n_elements, ext_Force, I_matrix, ext_Node)
-
+%Creation for each element stiffness matrix
 for count1 = 1:n_elements
-    K_matrix(count1) = SpringElementStiffness(k_vector(count1));   
+    K_matrix(:,:,count1) = SpringElementStiffness(k_vector(count1));   
 end
-
 K = zeros(n_nodes);
-
+%Assemble
 for count2 = 1:n_elements
-    g=1;
-    K = SpringAssemble(K,K_matrix(count2),I_matrix(count2,g),I_matrix(count2,g+1));
+    indx1=1;
+    K = SpringAssemble(K,K_matrix(:,:,count2),I_matrix(count2,indx1),I_matrix(count2,indx1+1));
 end
-Sf_nodes = sort(f_nodes, descend);
-aux = size(f_nodes);
+%Boundary and load conditions
+Sf_nodes = sort(f_nodes, 'descend'); %Order the fixed nodes 
+reduce = size(f_nodes); %Get the number of nodes to eliminate
 k = K;
-for count3 = 1:aux
+
+%Reducing the matrix
+for count3 = 1:reduce
     k = MatrixErase(k,Sf_nodes(count3),Sf_nodes(count3));
 end
+%Creating part of global displacement vector and auxiliary force vector
 vc = 1;
 for count4 = 1:n_nodes
-    for count5 = 1:aux
+    for count5 = 1:reduce
         if count4 ~= f_nodes(count5)
             if count4 == ext_Node
                 f(vc)= ext_Force;
@@ -32,22 +35,24 @@ for count4 = 1:n_nodes
         end
     end
 end
+%Solving the auxiliary displacement vector 
 f_t = f';
 u = k\f_t;
-
-for count6 = l:n_nodes
-    for count7 = 1:aux
+%Finishing global displacement vector
+for count6 = 1:n_nodes
+    for count7 = 1:reduce
         if count6 == f_nodes(count7)
             U(count6) = u(count7);
         end
     end
 end
+%Solving the auxiliary displacement vector
 U_Vector = U';
 F_Vector = K*U_Vector;
-
+%Finding the forces in each spring
 for count8 = 1:n_elements
-    gg=1
-    InternalForces(count8) = K_matrix(count8)*[U_Vector(I_matrix(count8,gg)),U_Vector(I_matrix(count8,gg+1))];
+    gg=1;
+    InternalForces(:,:,count8) = K_matrix(:,:,count8)*[U_Vector(I_matrix(count8,gg));U_Vector(I_matrix(count8,gg+1))];
 end
 
 
