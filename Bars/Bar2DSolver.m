@@ -1,6 +1,6 @@
 function [U_Vector, F_Vector, InternalForces, InternalStresses] = Bar2DSolver(A_vector, E_vector, T_vector, bar_coords, n_nodes, f_nodes, n_elements, ext_Force, I_matrix, ext_Node)
 format shortG
-%Finding the length and the angles of each bar 
+%Finding the length of each bar 
 for count1 = 1:n_elements
     L_vector(count1)= PlaneTrussElementLength(bar_coords(count1, 1),bar_coords(count1, 2),bar_coords(count1, 3),bar_coords(count1, 4));
 end
@@ -74,9 +74,5 @@ end
 %Finding the stresses in each bar
 for count10 = 1:n_elements
     gg=1;
-%     R1 = (I_matrix(count10,gg)*2-1)
-%     R2 = (I_matrix(count10,gg)*2)
-%     R3 = (I_matrix(count10,gg+1)*2-1)
-%     R4 = (I_matrix(count10,gg+1)*2)
     InternalStresses(count10) = PlaneTrussElementStress(E_vector(count10), L_vector(count10), T_vector(count10),[U_Vector((I_matrix(count10,gg)*2-1));U_Vector((I_matrix(count10,gg)*2));U_Vector((I_matrix(count10,gg+1)*2-1));U_Vector((I_matrix(count10,gg+1)*2))]);
 end
