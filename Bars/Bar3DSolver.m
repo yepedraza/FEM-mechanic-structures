@@ -15,7 +15,7 @@ K = zeros(n_nodes*3);
 %Assemble
 for count3 = 1:n_elements
     indx1=1;
-    K = PlaneTrussAssemble(K,K_matrix(:,:,count3),I_matrix(count3,indx1),I_matrix(count3,indx1+1));
+    K = SpaceTrussAssemble(K,K_matrix(:,:,count3),I_matrix(count3,indx1),I_matrix(count3,indx1+1));
 end
 %Boundary and load conditions
 Sf_nodes = sort(f_nodes, 'descend'); %Order the fixed nodes 
@@ -80,5 +80,5 @@ end
 %Finding the stresses in each bar
 for count10 = 1:n_elements
     gg=1;
-    InternalStresses(count10) = PlaneTrussElementStress(E_vector(count10), L_vector(count10), Thetax(count10), Thetay(count10), Thetaz(count10),[U_Vector((I_matrix(count9,gg)*3-2));U_Vector((I_matrix(count9,gg)*3-1));U_Vector((I_matrix(count9,gg)*3));U_Vector((I_matrix(count9,gg+1)*3-2));U_Vector((I_matrix(count9,gg+1)*3-1));U_Vector((I_matrix(count9,gg+1)*3))]);
+    InternalStresses(count10) = SpaceTrussElementStress(E_vector(count10), L_vector(count10), Thetax(count10), Thetay(count10), Thetaz(count10),[U_Vector((I_matrix(count9,gg)*3-2));U_Vector((I_matrix(count9,gg)*3-1));U_Vector((I_matrix(count9,gg)*3));U_Vector((I_matrix(count9,gg+1)*3-2));U_Vector((I_matrix(count9,gg+1)*3-1));U_Vector((I_matrix(count9,gg+1)*3))]);
 end
