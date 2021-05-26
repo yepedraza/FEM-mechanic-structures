@@ -9,7 +9,7 @@ for count2 = 1:n_elements
 end
 K = zeros(n_nodes*3);
 %Assemble
-for count3 = 1:n_bars
+for count3 = 1:n_elements
     K = GridAssemble(K,K_matrix(:,:,count3),I_matrix(count3,1),I_matrix(count3,2));
 end
 %Boundary and load conditions
@@ -68,7 +68,7 @@ end
 U_Vector = U';
 F_Vector = K*U_Vector;
 %Finding the forces in each beam
-for count9 = 1:n_bars
+for count9 = 1:n_elements
     gg=1;
-    InternalForces(count9) = GridElementForces(E_vector(count9), G_vector(count9), I_vector(count9), J_vector(count9), L_vector(count9), T_vector(count9),[U_Vector((I_matrix(count9,gg)*3-2));U_Vector((I_matrix(count9,gg)*3-1));U_Vector((I_matrix(count9,gg)*3));U_Vector((I_matrix(count9,gg+1)*3-2));U_Vector((I_matrix(count9,gg+1)*3-1));U_Vector((I_matrix(count9,gg+1)*3))]);
+    InternalForces(:,:,count9) = GridElementForces(E_vector(count9), G_vector(count9), I_vector(count9), J_vector(count9), L_vector(count9), T_vector(count9),[U_Vector((I_matrix(count9,gg)*3-2));U_Vector((I_matrix(count9,gg)*3-1));U_Vector((I_matrix(count9,gg)*3));U_Vector((I_matrix(count9,gg+1)*3-2));U_Vector((I_matrix(count9,gg+1)*3-1));U_Vector((I_matrix(count9,gg+1)*3))]);
 end
