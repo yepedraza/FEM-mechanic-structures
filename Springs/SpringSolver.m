@@ -1,4 +1,5 @@
 function [U_Vector, F_Vector, InternalForces] = SpringSolver(k_vector, n_nodes, f_nodes, n_elements, ext_Force, I_matrix, ext_Node)
+format shortG
 %Creation for each element stiffness matrix
 for count1 = 1:n_elements
     K_matrix(:,:,count1) = SpringElementStiffness(k_vector(count1));   
